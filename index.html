@@ -57,6 +57,7 @@
         min-height: 400px; 
         justify-content: center;
         transition: all 0.5s ease;
+        overflow: hidden;
     }
 
     .container.solid-mode {
@@ -125,7 +126,7 @@
     .btn-no {
         background: #ff4757;
         color: white;
-        transition: all 0.3s ease; 
+        transition: all 0.2s ease;
     }
 
     .btn-no.transformed {
@@ -134,15 +135,15 @@
     }
 
     .photo-container {
-        width: 250px;          
-        height: 300px;   
+        width: 250px;           
+        height: 300px;    
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         margin-top: 10px;
         border: 5px solid #fff;
         background-color: #eee;
         overflow: hidden; 
-        flex-shrink: 0;    
+        flex-shrink: 0;     
         position: relative;
         margin-left: auto;
         margin-right: auto;
@@ -151,7 +152,7 @@
     .couple-photo {
         width: 100%;        
         height: 100%;        
-        object-fit: cover;   
+        object-fit: cover;    
         transition: opacity 0.5s ease-in-out;
         opacity: 1;
         display: block;
@@ -188,7 +189,6 @@
 
 <audio id="bg-music" loop>
     <source src="music.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
 </audio>
 
 <div class="container" id="main-card">
@@ -254,11 +254,10 @@
     }
 
     function celebrate() {
-        // --- MUSIC STARTS HERE NOW ---
         const music = document.getElementById('bg-music');
         if(music && music.paused) {
             music.volume = 0.5; 
-            music.play().catch(e => console.log("Audio play failed:", e));
+            music.play().catch(e => console.log(e));
         }
 
         document.getElementById('screen-2').classList.add('hidden');
@@ -272,23 +271,18 @@
     }
 
     function restartSite() {
-        // 1. Reset Screen Visibility
         document.getElementById('screen-3').classList.add('hidden');
         document.getElementById('screen-1').classList.remove('hidden');
         document.getElementById('main-card').classList.remove('solid-mode');
 
-        // 2. Stop Animations
         clearInterval(slideshowInterval);
         clearEmojiIntervals();
         
-        // Remove existing floating emojis
         document.querySelectorAll('.floater').forEach(el => el.remove());
 
-        // 3. Reset Variables
         noClickCount = 0;
         isNoTransformed = false;
 
-        // 4. Reset "No" Button to original state
         const noBtn = document.getElementById('noBtn');
         noBtn.innerHTML = "לא 😢";
         noBtn.classList.remove('transformed');
@@ -314,6 +308,7 @@
         noClickCount++;
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
+        const container = document.getElementById('main-card'); 
 
         if (noClickCount >= 5) {
             isNoTransformed = true;
@@ -326,25 +321,29 @@
             return;
         }
 
-        noBtn.style.position = 'fixed'; 
-        noBtn.style.zIndex = '9999'; 
+        noBtn.style.position = 'absolute'; 
+        noBtn.style.zIndex = '1000'; 
 
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
+        const containerRect = container.getBoundingClientRect();
         const btnW = noBtn.offsetWidth;
         const btnH = noBtn.offsetHeight;
         
-        const maxLeft = vw - btnW - 20;
-        const maxTop = vh - btnH - 20;
+        const maxLeft = containerRect.width - btnW - 20; 
+        const maxTop = containerRect.height - btnH - 20;
         
         const yesRect = yesBtn.getBoundingClientRect();
-        const buffer = 20;
+        const yesRelLeft = yesRect.left - containerRect.left;
+        const yesRelTop = yesRect.top - containerRect.top;
+        const yesW = yesRect.width;
+        const yesH = yesRect.height;
+        
+        const buffer = 10;
 
         let newX, newY;
         let isOverlapping = true;
         let attempts = 0;
 
-        while (isOverlapping && attempts < 50) {
+        while (isOverlapping && attempts < 100) {
             newX = Math.random() * maxLeft;
             newY = Math.random() * maxTop;
 
@@ -352,10 +351,10 @@
             if (newY < 10) newY = 10;
 
             const overlapsYes = !(
-                newX + btnW + buffer < yesRect.left || 
-                newX - buffer > yesRect.right || 
-                newY + btnH + buffer < yesRect.top || 
-                newY - buffer > yesRect.bottom
+                newX + btnW + buffer < yesRelLeft || 
+                newX - buffer > yesRelLeft + yesW || 
+                newY + btnH + buffer < yesRelTop || 
+                newY - buffer > yesRelTop + yesH
             );
 
             if (!overlapsYes) {
@@ -363,12 +362,14 @@
             }
             attempts++;
         }
+        
+        if (isOverlapping) {
+             newX = 10;
+             newY = 10;
+        }
 
-        const safeX = Math.max(10, Math.min(newX, maxLeft));
-        const safeY = Math.max(10, Math.min(newY, maxTop));
-
-        noBtn.style.left = safeX + 'px';
-        noBtn.style.top = safeY + 'px';
+        noBtn.style.left = newX + 'px';
+        noBtn.style.top = newY + 'px';
     }
 
     function rotatePhoto() {
@@ -406,4 +407,3 @@
 
 </body>
 </html>
-
