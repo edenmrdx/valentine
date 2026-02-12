@@ -232,7 +232,7 @@
             נדבר, נצחק, נתרגש
             ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️
         </p>
-        <button class="btn btn-restart" onclick="restartSite()">מהתחלה ⏪</button>
+        <button class="btn btn-restart" onclick="restartSite()">מהתחלה 🔄</button>
     </div>
 </div>
 
@@ -314,7 +314,7 @@
         const yesBtn = document.getElementById('yesBtn');
         const mainCard = document.getElementById('main-card');
 
-        if (noClickCount >= 5) {
+        if (noClickCount >= 10) {
             isNoTransformed = true;
             noBtn.innerHTML = "כן! ❤️";
             noBtn.classList.add('transformed');
@@ -332,6 +332,10 @@
         if (noBtn.parentNode !== mainCard) {
             mainCard.appendChild(noBtn);
             noBtn.style.position = 'absolute';
+        }
+
+        if (noClickCount >= 5) {
+            noBtn.style.transform = 'scale(0.5)';
         }
 
         const cardRect = mainCard.getBoundingClientRect();
