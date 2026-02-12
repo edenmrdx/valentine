@@ -246,13 +246,6 @@
     const emojis = ["❤️", "🦦", "🐶", "💖", "🥰"]; 
 
     function revealMessage() {
-        // Play music if not already playing
-        const music = document.getElementById('bg-music');
-        if(music && music.paused) {
-            music.volume = 0.5; 
-            music.play().catch(e => console.log("Audio play failed:", e));
-        }
-        
         document.getElementById('screen-1').classList.add('hidden');
         const s2 = document.getElementById('screen-2');
         s2.classList.remove('hidden');
@@ -261,6 +254,13 @@
     }
 
     function celebrate() {
+        // --- MUSIC STARTS HERE NOW ---
+        const music = document.getElementById('bg-music');
+        if(music && music.paused) {
+            music.volume = 0.5; 
+            music.play().catch(e => console.log("Audio play failed:", e));
+        }
+
         document.getElementById('screen-2').classList.add('hidden');
         const s3 = document.getElementById('screen-3');
         s3.classList.remove('hidden');
@@ -272,8 +272,6 @@
     }
 
     function restartSite() {
-        // Instead of reloading the page (which stops music), we manually reset the view
-        
         // 1. Reset Screen Visibility
         document.getElementById('screen-3').classList.add('hidden');
         document.getElementById('screen-1').classList.remove('hidden');
