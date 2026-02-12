@@ -280,7 +280,7 @@
             <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
         </div>
         
-        <div class="countdown-wrapper">
+        <div class="countdown-wrapper" dir="ltr">
             <div class="countdown-item">
                 <span class="countdown-number" id="days">00</span>
                 <span>ימים</span>
@@ -321,7 +321,7 @@
     let emojiIntervals = []; 
     let noClickCount = 0;
     let isNoTransformed = false;
-    let countdownInterval; // משתנה חדש לשעון
+    let countdownInterval; 
     const emojis = ["❤️", "🦦", "🐶", "🐥", "🥰"]; 
 
     // רשימת הסיבות לאהבה
@@ -361,10 +361,10 @@
         clearEmojiIntervals();
         startEmojiRain(100); 
         slideshowInterval = setInterval(rotatePhoto, 4000); 
-        startCountdown(); // הפעלת השעון
+        startCountdown(); 
     }
 
-    // פונקציה חדשה להצגת סיבות
+    // פונקציה להצגת סיבות
     function showReason() {
         const reasonDiv = document.getElementById('reason-display');
         const randomReason = loveReasons[Math.floor(Math.random() * loveReasons.length)];
@@ -376,7 +376,7 @@
         }, 300);
     }
 
-    // פונקציה חדשה לשעון
+    // פונקציה לשעון
     function startCountdown() {
         const currentYear = new Date().getFullYear();
         // כיוון זמן לפיליפינים 14 לפברואר, 22:00
