@@ -22,7 +22,7 @@ body {
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 3rem; /* bigger for mobile */
     line-height: 1.3;
     opacity: 0;
     transform: translateY(20px);
@@ -31,8 +31,8 @@ h1 {
 }
 
 button {
-    padding: 30px 70px;
-    font-size: 1.8rem;
+    padding: 20px 50px; /* bigger touch area */
+    font-size: 1.5rem;
     border: none;
     border-radius: 30px;
     background: white;
@@ -58,7 +58,7 @@ button:hover { transform: scale(1.05); }
     opacity: 0.7;
 }
 
-/* Floating animals */
+/* Floating animals (emoji) */
 .animal {
     position: absolute;
     bottom: -20px;
@@ -70,7 +70,7 @@ button:hover { transform: scale(1.05); }
 
 @keyframes floatUp {
     from { transform: translateY(0); opacity: 0.7; }
-    to { transform: translateY(-120vh); opacity: 0; } /* further so slower hearts look smooth */
+    to { transform: translateY(-120vh); opacity: 0; }
 }
 
 @keyframes floatDiagonal {
@@ -78,7 +78,7 @@ button:hover { transform: scale(1.05); }
     25% { transform: translate(10px,-25vh) rotate(5deg); }
     50% { transform: translate(-10px,-50vh) rotate(-5deg); }
     75% { transform: translate(10px,-75vh) rotate(5deg); }
-    100% { transform: translate(0,-100vh) rotate(0deg); opacity: 0; }
+    100% { transform: translate(0,-120vh) rotate(0deg); opacity: 0; }
 }
 </style>
 </head>
@@ -88,8 +88,8 @@ button:hover { transform: scale(1.05); }
 <div class="container">
     <button onclick="reveal()">Click here ❤️</button>
     <h1 id="message">
-        Dear Zozy,<br><br>
-        Would you be my Valentine? ❤️
+        Zozy my love,<br><br>
+        Would you be my Valentine? 💘
     </h1>
 </div>
 
@@ -102,57 +102,39 @@ function reveal() {
     setTimeout(() => { msg.classList.add("show"); }, 100);
 }
 
-// Preload images
-const preloadImages = ["deer.png", "monkey.png"];
-preloadImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-});
-
 // Floating hearts
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.innerHTML = "❤️";
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 30 + 20) + "px";
-    heart.style.animationDuration = (Math.random() * 5 + 5) + "s"; // slower hearts
+    heart.style.fontSize = (Math.random() * 30 + 20) + "px"; // bigger for mobile
+    const duration = Math.random() * 5 + 5; // 5-10s
+    heart.style.animationDuration = duration + "s";
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 12000);
-}
-setInterval(createHeart, 400); // spawn interval
 
-// Floating animals with emoji fallback
-function createAnimal(imagePath, fallback) {
-    const animal = document.createElement("img");
-    animal.src = imagePath;
+    setTimeout(() => heart.remove(), duration * 1000); // match duration exactly
+}
+setInterval(createHeart, 400);
+
+// Floating animals (emoji)
+function createAnimal(emoji) {
+    const animal = document.createElement("div");
     animal.classList.add("animal");
+    animal.innerHTML = emoji;
     animal.style.left = Math.random() * 100 + "vw";
-    animal.style.width = (Math.random() * 50 + 30) + "px";
-    animal.style.animationDuration = (Math.random() * 5 + 5) + "s";
+    animal.style.fontSize = (Math.random() * 60 + 50) + "px"; // bigger for mobile
+    const duration = Math.random() * 5 + 5; // 5-10s
+    animal.style.animationDuration = duration + "s";
     document.body.appendChild(animal);
 
-    // fallback to emoji if PNG fails
-    animal.onerror = () => {
-        animal.remove();
-        const emoji = document.createElement("div");
-        emoji.classList.add("animal");
-        emoji.innerHTML = fallback;
-        emoji.style.left = animal.style.left;
-        emoji.style.fontSize = (Math.random() * 60 + 40) + "px";
-        emoji.style.animationDuration = animal.style.animationDuration;
-        document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 10000);
-    }
-
-    setTimeout(() => animal.remove(), 10000);
+    setTimeout(() => animal.remove(), duration * 1000); // match duration exactly
 }
 
 // Spawn animals
-setInterval(() => createAnimal("deer.png", "🦌"), 4000);
-setInterval(() => createAnimal("monkey.png", "🐒"), 5000);
+setInterval(() => createAnimal("🦌"), 4000);
+setInterval(() => createAnimal("🐒"), 5000);
 </script>
 
 </body>
 </html>
-
