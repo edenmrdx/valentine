@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For Zozy ❤️</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
 
@@ -16,6 +16,7 @@
     body {
         margin: 0;
         height: 100vh;
+        width: 100vw;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -23,7 +24,7 @@
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
         font-family: 'Nunito', sans-serif;
-        overflow: hidden;
+        overflow: hidden; /* Prevents scrolling when button moves */
         position: relative;
     }
 
@@ -36,45 +37,47 @@
     .container {
         text-align: center;
         color: #fff;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        padding: 40px;
+        padding: 30px 20px; /* Smaller padding for mobile */
         border-radius: 20px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         border: 1px solid rgba(255, 255, 255, 0.18);
-        max-width: 90%;
-        width: 400px;
+        
+        /* Mobile Sizing Fixes */
+        width: 90%; 
+        max-width: 350px; 
         position: relative;
         z-index: 10;
-        transition: transform 0.3s ease;
     }
 
     h1 {
         font-family: 'Pacifico', cursive;
-        font-size: 2.5rem;
-        margin-bottom: 20px;
+        font-size: 2rem; /* Slightly smaller for mobile */
+        margin-bottom: 15px;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
     p {
-        font-size: 1.2rem;
-        line-height: 1.5;
-        margin-bottom: 30px;
+        font-size: 1.1rem;
+        line-height: 1.4;
+        margin-bottom: 25px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .btn {
-        padding: 15px 30px;
-        font-size: 1.2rem;
+        padding: 12px 25px;
+        font-size: 1.1rem;
         border: none;
         border-radius: 50px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: transform 0.2s ease; /* Faster transition for mobile */
         font-weight: bold;
-        margin: 10px;
+        margin: 8px;
         outline: none;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        -webkit-tap-highlight-color: transparent; /* Removes blue box on tap */
     }
 
     .btn-primary {
@@ -82,16 +85,20 @@
         color: var(--primary);
     }
     
-    .btn-primary:hover { transform: scale(1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .btn-primary:active { transform: scale(0.95); }
 
     .btn-yes {
         background: #2ed573;
         color: white;
+        z-index: 20; /* Ensure YES is always on top */
+        position: relative;
     }
 
     .btn-no {
         background: #ff4757;
         color: white;
+        z-index: 50; /* Ensure NO floats above everything */
+        transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
     }
 
     /* Slideshow Styling */
@@ -109,7 +116,6 @@
         opacity: 1;
     }
 
-    /* Helper class to hide image during swap */
     .fade-out {
         opacity: 0;
     }
@@ -153,7 +159,8 @@
         <p>You make my world brighter.<br>Will you be my Valentine?</p>
         <div style="display: flex; justify-content: center; flex-wrap: wrap; position: relative;">
             <button class="btn btn-yes" onclick="celebrate()">YES! ❤️</button>
-            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No 😢</button>
+            
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()" onclick="moveButton()">No 😢</button>
         </div>
     </div>
 
@@ -168,7 +175,6 @@
 
 <script>
     // --- 1. SLIDESHOW CONFIGURATION ---
-    // Make sure 'us4.jpg' exists in your github, or remove it from this list!
     const photos = ["us1.jpg", "us2.jpg", "us3.jpg", "us4.jpg"];
     let photoIndex = 0;
     
@@ -190,13 +196,31 @@
         startEmojiRain(800); 
     }
 
+    // --- NEW MOBILE OPTIMIZED BUTTON MOVE ---
     function moveButton() {
         const btn = document.getElementById('noBtn');
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 50);
+        
+        // Get the actual width/height of the button
+        const btnWidth = btn.offsetWidth;
+        const btnHeight = btn.offsetHeight;
+        
+        // Get the window size
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        // Calculate the safe area so it never goes off screen
+        // We subtract the button size and a 20px padding from the edge
+        const maxLeft = windowWidth - btnWidth - 20;
+        const maxTop = windowHeight - btnHeight - 20;
+
+        // Generate random position within safe area
+        // Math.max(10, ...) ensures it doesn't get too close to the top/left edge either
+        const newLeft = Math.max(10, Math.random() * maxLeft);
+        const newTop = Math.max(10, Math.random() * maxTop);
+
         btn.style.position = 'fixed'; 
-        btn.style.left = x + 'px';
-        btn.style.top = y + 'px';
+        btn.style.left = newLeft + 'px';
+        btn.style.top = newTop + 'px';
     }
 
     function celebrate() {
@@ -208,17 +232,15 @@
         clearIntervals();
         startEmojiRain(100); 
         
-        // Start the picture rotation
-        setInterval(rotatePhoto, 3000); 
+        // --- CHANGED TO 4 SECONDS (4000ms) ---
+        setInterval(rotatePhoto, 4000); 
     }
 
     function rotatePhoto() {
         const imgElement = document.getElementById('slideshow');
         
-        // 1. Fade out
         imgElement.classList.add('fade-out');
 
-        // 2. Wait 500ms, then switch image and fade back in
         setTimeout(() => {
             photoIndex = (photoIndex + 1) % photos.length; 
             imgElement.src = photos[photoIndex];
