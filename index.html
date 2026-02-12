@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>בשביל זוזי ❤️</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --primary: #ff6b81;
+        --bg-1: #ff9a9e;
+        --bg-2: #fad0c4;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, var(--bg-1), var(--bg-2), #fbc2eb);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        font-family: 'Rubik', sans-serif;
+        overflow: hidden;
+        position: relative;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        text-align: center;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 30px 20px;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        width: 90%; 
+        max-width: 350px; 
+        position: relative;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 400px; 
+        justify-content: center;
+        transition: all 0.5s ease;
+        overflow: hidden;
+    }
+
+    .container.solid-mode {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border: none;
+        color: #ff6b81;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        font-family: 'Amatic SC', cursive;
+        font-size: 3rem; 
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    p {
+        font-size: 1.1rem; 
+        line-height: 1.5;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        white-space: pre-line; 
+    }
+
+    .solid-mode p, .solid-mode h1 {
+        text-shadow: none;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        font-weight: bold;
+        font-family: 'Rubik', sans-serif;
+        margin: 8px;
+        outline: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        z-index: 200;
+        white-space: nowrap; 
+        min-width: 80px; 
+    }
+
+    .btn-yes {
+        background: #2ed573;
+        color: white;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .btn-restart {
+        background: #ff6b81;
+        border: none;
+        color: white;
+        margin-top: 15px;
+        font-size: 1rem;
+    }
+    
+    .btn-no {
+        background: #ff4757;
+        color: white;
+        transition: all 0.2s ease;
+    }
+
+    .btn-no.transformed {
+        background: #2ed573 !important;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .photo-container {
+        width: 250px;           
+        height: 300px;    
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        margin-top: 10px;
+        border: 5px solid #fff;
+        background-color: #eee;
+        overflow: hidden; 
+        flex-shrink: 0;     
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .couple-photo {
+        width: 100%;        
+        height: 100%;        
+        object-fit: cover;    
+        transition: opacity 0.75s ease-in-out;
+        opacity: 1;
+        display: block;
+    }
+
+    .fade-out { opacity: 0; }
+    .hidden { display: none !important; }
+    
+    .fade-in {
+        animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .floater {
+        position: absolute;
+        bottom: -50px;
+        pointer-events: none;
+        user-select: none;
+        z-index: 1; 
+    }
+
+    @keyframes floatUpAndSway {
+        0% { transform: translateY(0) translateX(0); opacity: 1; }
+        100% { transform: translateY(-120vh) translateX(0); opacity: 0; }
+    }
+
+    .click-heart {
+    position: absolute;
+    pointer-events: none;
+    animation: flyUp 1s ease-out forwards;
+    font-size: 20px;
+    z-index: 9999;
+}
+
+@keyframes flyUp {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+    100% { transform: translate(-50%, -150px) scale(1.5); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container" id="main-card">
+    
+    <div id="screen-1">
+        <h1>זוז קטן, </h1>
+        <p>
+            אנחנו נמצאים בנקודות שונות על כדור הארץ,
+            אבל בולנטיין הזה אני מרגיש קרוב אלייך מתמיד.
+        <p>
+            חשוב לי שתדעי שאין כמוך בעולם,
+            את הכל בשבילי,
+            ואני אוהב אותך הכי שיש!
+        </p>
+        <p style="font-weight: bold; margin-bottom: 10px;">
+            ודבר נוסף, יש לי שאלה חשובה...
+        </p>
+        <button class="btn btn-yes" onclick="revealMessage()">לחצי כאן</button>
+    </div>
+
+    <div id="screen-2" class="hidden">
+        <h1>❤️✨</h1>
+        <p style="font-size: 1.5rem; font-weight: bold;">האם תהיי הולנטיין שלי?</p>
+        
+        <div id="btn-wrapper" style="display: flex; justify-content: center; flex-wrap: wrap; position: relative; width: 100%; min-height: 100px;">
+            <button class="btn btn-yes" id="yesBtn" onclick="celebrate()">כן! ❤️</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="handleNoClick(event)">לא 😞</button>
+        </div>
+    </div>
+
+    <div id="screen-3" class="hidden">
+        <h1>🥂💐🥳</h1>
+        <div class="photo-container">
+            <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
+        </div>
+        <p style="margin-top: 20px;">
+            ב- 14/02 בשעה 22:00 (שעון הפיליפינים)
+            ניפגש לדייט וידאו רומנטי וכיפי
+
+            נדבר, נצחק, נתרגש
+            ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️
+        </p>
+        <button class="btn btn-restart" onclick="restartSite()">מהתחלה 🔄</button>
+    </div>
+</div>
+
+<script>
+    const photos = ["us1.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg", "us6.jpg"];
+    let photoIndex = 0;
+    let slideshowInterval; 
+    let emojiIntervals = []; 
+    let noClickCount = 0;
+    let isNoTransformed = false;
+    const emojis = ["❤️", "🦦", "🐶", "🐥", "🥰"]; 
+
+    function revealMessage() {
+        document.getElementById('screen-1').classList.add('hidden');
+        const s2 = document.getElementById('screen-2');
+        s2.classList.remove('hidden');
+        s2.classList.add('fade-in');
+        startEmojiRain(800); 
+    }
+
+    function celebrate() {
+        const music = document.getElementById('bg-music');
+        if(music && music.paused) {
+            music.volume = 0.5; 
+            music.play().catch(e => console.log(e));
+        }
+
+        document.getElementById('screen-2').classList.add('hidden');
+        
+        // תיקון: הסתרת כפתור ה-לא באופן ספציפי
+        const noBtn = document.getElementById('noBtn');
+        if(noBtn) noBtn.classList.add('hidden');
+
+        const s3 = document.getElementById('screen-3');
+        s3.classList.remove('hidden');
+        s3.classList.add('fade-in');
+        document.getElementById('main-card').classList.add('solid-mode');
+        clearEmojiIntervals();
+        startEmojiRain(100); 
+        slideshowInterval = setInterval(rotatePhoto, 4000); 
+    }
+
+    function restartSite() {
+        document.getElementById('screen-3').classList.add('hidden');
+        document.getElementById('screen-1').classList.remove('hidden');
+        document.getElementById('main-card').classList.remove('solid-mode');
+
+        clearInterval(slideshowInterval);
+        clearEmojiIntervals();
+        
+        document.querySelectorAll('.floater').forEach(el => el.remove());
+
+        noClickCount = 0;
+        isNoTransformed = false;
+
+        const noBtn = document.getElementById('noBtn');
+        const btnWrapper = document.getElementById('btn-wrapper');
+        
+        btnWrapper.appendChild(noBtn);
+
+        noBtn.innerHTML = "לא 😞";
+        noBtn.classList.remove('transformed');
+        
+        // תיקון: הסרת המחלקה hidden כדי שהכפתור יחזור להופיע
+        noBtn.classList.remove('hidden');
+        
+        noBtn.style.position = 'static'; 
+        noBtn.style.left = '';
+        noBtn.style.top = '';
+        noBtn.style.transform = '';
+    }
+
+    function handleNoClick(e) {
+        if (isNoTransformed) {
+            celebrate();
+        } else {
+            moveButton(e);
+        }
+    }
+
+    function moveButton(e) {
+        if (isNoTransformed) return;
+        
+        if(e && e.type === 'touchstart') e.preventDefault();
+        
+        noClickCount++;
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const mainCard = document.getElementById('main-card');
+
+        if (noClickCount >= 12) {
+            isNoTransformed = true;
+            noBtn.innerHTML = "כן! 🙃";
+            noBtn.classList.add('transformed');
+            noBtn.style.position = 'static';
+            noBtn.style.transform = 'scale(1)';
+            noBtn.style.left = '';
+            noBtn.style.top = '';
+            
+            const btnWrapper = document.getElementById('btn-wrapper');
+            btnWrapper.appendChild(noBtn);
+            
+            return;
+        }
+
+        if (noBtn.parentNode !== mainCard) {
+            mainCard.appendChild(noBtn);
+            noBtn.style.position = 'absolute';
+        }
+
+        if (noClickCount >= 9) {
+            noBtn.style.transform = 'scale(0.35)';
+        } else if (noClickCount >= 7) {
+            noBtn.style.transform = 'scale(0.5)';
+        } else if (noClickCount >= 5) {
+            noBtn.style.transform = 'scale(0.8)';
+        }
+
+        const cardRect = mainCard.getBoundingClientRect();
+        const btnW = noBtn.offsetWidth;
+        const btnH = noBtn.offsetHeight;
+        
+        const maxLeft = cardRect.width - btnW - 10; 
+        const maxTop = cardRect.height - btnH - 10;
+        
+        const yesRect = yesBtn.getBoundingClientRect();
+        
+        const yesRelLeft = yesRect.left - cardRect.left;
+        const yesRelTop = yesRect.top - cardRect.top;
+        const yesW = yesRect.width;
+        const yesH = yesRect.height;
+        
+        const buffer = 10;
+
+        let newX, newY;
+        let isOverlapping = true;
+        let attempts = 0;
+
+        while (isOverlapping && attempts < 100) {
+            newX = Math.random() * maxLeft;
+            newY = Math.random() * maxTop;
+
+            if (newX < 10) newX = 10;
+            if (newY < 10) newY = 10;
+
+            const overlapsYes = !(
+                newX + btnW + buffer < yesRelLeft || 
+                newX - buffer > yesRelLeft + yesW || 
+                newY + btnH + buffer < yesRelTop || 
+                newY - buffer > yesRelTop + yesH
+            );
+
+            if (!overlapsYes) {
+                isOverlapping = false;
+            }
+            attempts++;
+        }
+        
+        if (isOverlapping) {
+             newX = 10;
+             newY = 10;
+        }
+
+        noBtn.style.left = newX + 'px';
+        noBtn.style.top = newY + 'px';
+    }
+
+    function rotatePhoto() {
+        const imgElement = document.getElementById('slideshow');
+        imgElement.classList.add('fade-out');
+        setTimeout(() => {
+            photoIndex = (photoIndex + 1) % photos.length; 
+            imgElement.src = photos[photoIndex];
+            imgElement.onload = () => imgElement.classList.remove('fade-out');
+        }, 750); 
+    }
+
+    function startEmojiRain(intervalTime) {
+        const id = setInterval(createEmoji, intervalTime);
+        emojiIntervals.push(id);
+    }
+
+    function clearEmojiIntervals() {
+        emojiIntervals.forEach(id => clearInterval(id));
+        emojiIntervals = [];
+    }
+
+    function createEmoji() {
+        const emoji = document.createElement("div");
+        emoji.classList.add("floater");
+        emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.fontSize = (Math.random() * 20 + 30) + "px";
+        const duration = Math.random() * 3 + 4; 
+        emoji.style.animation = `floatUpAndSway ${duration}s linear forwards`;
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), duration * 1000);
+    }
+
+    document.addEventListener('click', function(e) {
+    const heartCount = 5; 
+    const colors = ['#ff6b81', '#ff4757', '#2ed573', '#ffffff']; 
+
+    for (let i = 0; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('click-heart');
+        heart.innerHTML = "❤️";
+        
+        // Random position near the click
+        const offsetX = (Math.random() - 0.5) * 50;
+        const offsetY = (Math.random() - 0.5) * 50;
+        
+        heart.style.left = (e.clientX + offsetX) + 'px';
+        heart.style.top = (e.clientY + offsetY) + 'px';
+        
+        // Random size and rotation
+        const size = Math.random() * 20 + 10;
+        heart.style.fontSize = size + 'px';
+        heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+        
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    }
+});
+</script>
+
+</body>
+</html>
+
