@@ -135,15 +135,15 @@
     }
 
     .photo-container {
-        width: 250px;           
-        height: 300px;    
+        width: 250px;            
+        height: 250px;    
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         margin-top: 10px;
         border: 5px solid #fff;
         background-color: #eee;
         overflow: hidden; 
-        flex-shrink: 0;     
+        flex-shrink: 0;      
         position: relative;
         margin-left: auto;
         margin-right: auto;
@@ -156,6 +156,39 @@
         transition: opacity 0.75s ease-in-out;
         opacity: 1;
         display: block;
+    }
+
+    /* עיצוב הטיימר החדש */
+    .countdown-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 15px 0;
+        direction: rtl;
+    }
+
+    .time-box {
+        background: #ffeaa7; /* צהבהב עדין שמתאים לורוד */
+        color: #ff6b81;
+        padding: 5px 8px;
+        border-radius: 10px;
+        min-width: 45px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .time-box span.number {
+        font-weight: 700;
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .time-box span.label {
+        font-size: 0.7rem;
+        font-weight: 400;
+        margin-top: 2px;
     }
 
     .fade-out { opacity: 0; }
@@ -237,10 +270,32 @@
         <div class="photo-container">
             <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
         </div>
-        <p style="margin-top: 10px;">
+        <p style="margin-top: 10px; margin-bottom: 5px;">
             ב- 14/02 בשעה 22:00 (שעון הפיליפינים)
-            ניפגש לדייט וידאו רומנטי וכיפי
+            ניפגש לדייט וידאו רומנטי!
+            <br>נשאר עוד:
+        </p>
 
+        <div class="countdown-wrapper" id="countdown">
+            <div class="time-box">
+                <span class="number" id="days">0</span>
+                <span class="label">ימים</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="hours">0</span>
+                <span class="label">שעות</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="minutes">0</span>
+                <span class="label">דקות</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="seconds">0</span>
+                <span class="label">שניות</span>
+            </div>
+        </div>
+
+        <p style="font-size: 0.9rem;">
             נדבר, נצחק, נתרגש
             ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️
         </p>
@@ -255,6 +310,7 @@
     let emojiIntervals = []; 
     let noClickCount = 0;
     let isNoTransformed = false;
+    let countdownInterval; // משתנה לשמירת ה-Interval של השעון
     const emojis = ["❤️", "🦦", "🐶", "🐥", "🥰"]; 
 
     function revealMessage() {
@@ -274,7 +330,6 @@
 
         document.getElementById('screen-2').classList.add('hidden');
         
-        // תיקון: הסתרת כפתור ה-לא באופן ספציפי
         const noBtn = document.getElementById('noBtn');
         if(noBtn) noBtn.classList.add('hidden');
 
@@ -282,9 +337,13 @@
         s3.classList.remove('hidden');
         s3.classList.add('fade-in');
         document.getElementById('main-card').classList.add('solid-mode');
+        
         clearEmojiIntervals();
         startEmojiRain(100); 
         slideshowInterval = setInterval(rotatePhoto, 4000); 
+        
+        // התחלת השעון
+        startCountdown();
     }
 
     function restartSite() {
@@ -293,6 +352,7 @@
         document.getElementById('main-card').classList.remove('solid-mode');
 
         clearInterval(slideshowInterval);
+        clearInterval(countdownInterval); // איפוס השעון
         clearEmojiIntervals();
         
         document.querySelectorAll('.floater').forEach(el => el.remove());
@@ -307,14 +367,47 @@
 
         noBtn.innerHTML = "לא 😞";
         noBtn.classList.remove('transformed');
-        
-        // תיקון: הסרת המחלקה hidden כדי שהכפתור יחזור להופיע
         noBtn.classList.remove('hidden');
         
         noBtn.style.position = 'static'; 
         noBtn.style.left = '';
         noBtn.style.top = '';
         noBtn.style.transform = '';
+    }
+
+    // פונקציית השעון החדשה
+    function startCountdown() {
+        // חישוב השנה הנוכחית כדי שהקוד יעבוד גם בשנים הבאות (או שניתן לקבוע 2024 קבוע)
+        const currentYear = new Date().getFullYear();
+        
+        // הגדרת תאריך היעד: 14 בפברואר בשעה 22:00, איזור זמן UTC+8 (פיליפינים)
+        // הפורמט ISO עם Offset מבטיח דיוק בזמנים
+        const targetDate = new Date(`${currentYear}-02-14T22:00:00+08:00`).getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // אם התאריך עבר
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML = "<h3 style='margin:0'>הזמן הגיע! ❤️</h3>";
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        updateTimer(); // הרצה ראשונית מיידית
+        countdownInterval = setInterval(updateTimer, 1000);
     }
 
     function handleNoClick(e) {
@@ -476,5 +569,3 @@
 
 </body>
 </html>
-
-
