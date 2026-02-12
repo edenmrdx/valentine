@@ -69,7 +69,7 @@
     }
 
     p {
-        font-size: 1.1rem; /* Slightly smaller to fit the longer text */
+        font-size: 1.1rem; 
         line-height: 1.5;
         margin-bottom: 20px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
@@ -95,6 +95,19 @@
     .btn-yes {
         background: #2ed573;
         color: white;
+    }
+    
+    .btn-primary {
+        background: white;
+        color: var(--primary);
+    }
+
+    .btn-restart {
+        background: rgba(255, 255, 255, 0.3);
+        border: 2px solid white;
+        color: white;
+        margin-top: 15px;
+        font-size: 1rem;
     }
 
     .btn-no {
@@ -155,19 +168,19 @@
         <h1>זוז קטן ❤️</h1>
         <p>
             אני יודע שאנחנו נמצאים בנקודות שונות על כדור הארץ,
-            אבל בולנטיין הזה אני מרגיש קרוב אלייך מתמיד 
+            אבל בולנטיין הזה אני מרגיש קרוב אלייך מתמיד 3>
         </p>
         <p>
-            חשוב לי שתדעי שאין כמוך בעולם, את הכל בשבילי, ואני אוהב אותך הכי שיש!
+            חשוב לי שתדעי שאין כמוך בעולם ואת הכל בשבילי, ואני אוהב אותך הכי שיש!
         </p>
         <p style="font-weight: bold; margin-bottom: 10px;">
-            ודבר נוסף, יש לי שאלה חשובה...
+            ודבר נוסף.. יש לי שאלה חשובה..
         </p>
         <button class="btn btn-yes" onclick="revealMessage()">לחצי כאן</button>
     </div>
 
     <div id="screen-2" class="hidden">
-        <h1>❤️✨</h1>
+        <h1>?</h1>
         <p style="font-size: 1.5rem; font-weight: bold;">האם תהיי הולנטיין שלי?</p>
         
         <div style="display: flex; justify-content: center; flex-wrap: wrap; position: relative; width: 100%;">
@@ -181,11 +194,9 @@
         
         <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
         
-        <p style="margin-top: 20px;">קבענו לוידיאו דייט ב14/02
-            בשעה 22:00 (שעון הפיליפינים)
-            
-            נדבר, נצחק ונתרגש ביחד
-            ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️</p>
+        <p style="margin-top: 20px;">הולנטיין הכי טוב אי פעם! ❤️</p>
+        
+        <button class="btn btn-restart" onclick="restartSite()">מהתחלה ⏪</button>
     </div>
 </div>
 
@@ -193,6 +204,9 @@
     // --- 1. SLIDESHOW CONFIGURATION ---
     const photos = ["us1.jpg", "us2.jpg", "us3.jpg", "us4.jpg"];
     let photoIndex = 0;
+    
+    // Global variable for the slideshow timer so we can stop it later
+    let slideshowInterval; 
     
     // Preload images
     photos.forEach(src => {
@@ -212,7 +226,7 @@
         startEmojiRain(800); 
     }
 
-    // --- FIX: BUTTON MOVEMENT LOGIC ---
+    // --- BUTTON MOVEMENT LOGIC ---
     function moveButton(e) {
         if(e && e.type === 'touchstart') e.preventDefault();
         
@@ -227,7 +241,6 @@
         const btnW = 100; 
         const btnH = 50;
 
-        // Strict Safe Zone (20px padding)
         const minX = 20;
         const maxX = w - btnW - 20;
         const minY = 20;
@@ -249,7 +262,33 @@
         clearIntervals();
         startEmojiRain(100); 
         
-        setInterval(rotatePhoto, 4000); 
+        // Save the interval ID so we can stop it on restart
+        slideshowInterval = setInterval(rotatePhoto, 4000); 
+    }
+
+    // --- NEW RESTART FUNCTION ---
+    function restartSite() {
+        // 1. Stop the slideshow
+        clearInterval(slideshowInterval);
+        
+        // 2. Stop the heavy emoji rain
+        clearIntervals();
+        
+        // 3. Reset Screens
+        document.getElementById('screen-3').classList.add('hidden');
+        document.getElementById('screen-3').classList.remove('fade-in');
+        
+        const screen1 = document.getElementById('screen-1');
+        screen1.style.display = 'block';
+        screen1.classList.add('fade-in');
+
+        // 4. Reset Data
+        photoIndex = 0;
+        document.getElementById('slideshow').src = photos[0];
+        
+        // 5. Reset "No" Button Position
+        // We remove the style attribute to strip 'position: fixed' and coordinates
+        document.getElementById('noBtn').removeAttribute('style');
     }
 
     function rotatePhoto() {
@@ -289,4 +328,3 @@
 
 </body>
 </html>
-
