@@ -40,12 +40,10 @@
     .container {
         text-align: center;
         color: #fff;
-        /* Default Glass Style */
         background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.18);
-        
         padding: 30px 20px;
         border-radius: 20px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -53,22 +51,20 @@
         max-width: 350px; 
         position: relative;
         z-index: 100;
-        
         display: flex;
         flex-direction: column;
         align-items: center;
         min-height: 400px; 
         justify-content: center;
-        transition: all 0.5s ease; /* Smooth transition for background change */
+        transition: all 0.5s ease;
     }
 
-    /* New class for Screen 3 Solid Background */
     .container.solid-mode {
-        background: rgba(255, 255, 255, 0.95); /* Solid White */
+        background: rgba(255, 255, 255, 0.95);
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
         border: none;
-        color: #ff6b81; /* Change text color to match theme since bg is white */
+        color: #ff6b81;
         box-shadow: 0 20px 50px rgba(0,0,0,0.15);
     }
 
@@ -81,7 +77,6 @@
         line-height: 1;
     }
 
-    /* FIX 2: PRE-LINE makes new lines in code appear as new lines on screen */
     p {
         font-size: 1.1rem; 
         line-height: 1.5;
@@ -90,7 +85,6 @@
         white-space: pre-line; 
     }
 
-    /* Override text shadow for solid mode */
     .solid-mode p, .solid-mode h1 {
         text-shadow: none;
     }
@@ -117,6 +111,7 @@
     .btn-yes {
         background: #2ed573;
         color: white;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .btn-restart {
@@ -127,10 +122,6 @@
         font-size: 1rem;
     }
     
-    .btn-restart:active {
-        background: #ff4757;
-    }
-
     .btn-no {
         background: #ff4757;
         color: white;
@@ -143,12 +134,11 @@
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         margin-top: 10px;
-        border: 5px solid #fff; /* Thicker white border like a polaroid */
+        border: 5px solid #fff;
         background-color: #eee;
         overflow: hidden; 
         flex-shrink: 0;   
         position: relative;
-        /* FIX 1: Explicit centering properties */
         margin-left: auto;
         margin-right: auto;
     }
@@ -162,24 +152,11 @@
         display: block;
     }
 
-    .fade-out {
-        opacity: 0;
-    }
-
-    .hidden {
-        display: none !important; 
-    }
+    .fade-out { opacity: 0; }
+    .hidden { display: none !important; }
     
     .fade-in {
         animation: fadeIn 1s forwards;
-    }
-
-    /* FIX 1: Dedicated container styles for screen 3 to ensure alignment */
-    #screen-3 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
     }
 
     @keyframes fadeIn {
@@ -197,9 +174,6 @@
 
     @keyframes floatUpAndSway {
         0% { transform: translateY(0) translateX(0); opacity: 1; }
-        25% { transform: translateY(-30vh) translateX(15px); }
-        50% { transform: translateY(-60vh) translateX(-15px); }
-        75% { transform: translateY(-90vh) translateX(10px); opacity: 0.8;}
         100% { transform: translateY(-120vh) translateX(0); opacity: 0; }
     }
 </style>
@@ -230,19 +204,17 @@
         <h1>❤️</h1>
         <p style="font-size: 1.5rem; font-weight: bold;">האם תהיי הולנטיין שלי?</p>
         
-        <div style="display: flex; justify-content: center; flex-wrap: wrap; position: relative; width: 100%;">
-            <button class="btn btn-yes" onclick="celebrate()">כן! ❤️</button>
+        <div style="display: flex; justify-content: center; flex-wrap: wrap; position: relative; width: 100%; min-height: 100px;">
+            <button class="btn btn-yes" id="yesBtn" onclick="celebrate()">כן! ❤️</button>
             <button class="btn btn-no" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="moveButton(event)">לא 😢</button>
         </div>
     </div>
 
     <div id="screen-3" class="hidden">
         <h1>🎇🥂💐</h1>
-        
         <div class="photo-container">
             <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
         </div>
-        
         <p style="margin-top: 20px;">
             ב- 14/02 בשעה 22:00 (שעון הפיליפינים)
             נפגש לוידאו דייט רומנטי וכיפי
@@ -250,122 +222,101 @@
             נדבר, נצחק, נתרגש
             ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️
         </p>
-        
         <button class="btn btn-restart" onclick="restartSite()">מהתחלה ⏪</button>
     </div>
 </div>
 
 <script>
-    // --- VARIABLES ---
     const photos = ["us1.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
     let photoIndex = 0;
     let slideshowInterval; 
     let emojiIntervals = []; 
-    const emojis = ["❤️", "🦦", "🐶", "💖", "🦦", "🥰"]; 
+    let yesScale = 1;
+    const emojis = ["❤️", "🦦", "🐶", "💖", "🥰"]; 
 
-    // Preload images
-    photos.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-
-    // --- STEP 1: REVEAL QUESTION ---
     function revealMessage() {
-        const s1 = document.getElementById('screen-1');
-        s1.classList.add('hidden');
-
+        document.getElementById('screen-1').classList.add('hidden');
         const s2 = document.getElementById('screen-2');
         s2.classList.remove('hidden');
         s2.classList.add('fade-in');
-        
         startEmojiRain(800); 
     }
 
-    // --- STEP 2: CELEBRATE ---
     function celebrate() {
-        const s2 = document.getElementById('screen-2');
-        s2.classList.add('hidden');
-
+        document.getElementById('screen-2').classList.add('hidden');
         const s3 = document.getElementById('screen-3');
         s3.classList.remove('hidden');
         s3.classList.add('fade-in');
-
-        // FIX 3: CHANGE BACKGROUND TO SOLID
-        const card = document.getElementById('main-card');
-        card.classList.add('solid-mode');
-
+        document.getElementById('main-card').classList.add('solid-mode');
         clearEmojiIntervals();
         startEmojiRain(100); 
-        
         slideshowInterval = setInterval(rotatePhoto, 4000); 
     }
 
-    // --- RESTART LOGIC ---
     function restartSite() {
         clearInterval(slideshowInterval);
         clearEmojiIntervals();
-
-        // FIX 3: REVERT BACKGROUND TO GLASS
+        yesScale = 1;
+        const yesBtn = document.getElementById('yesBtn');
+        yesBtn.style.transform = 'scale(1)';
+        
         const card = document.getElementById('main-card');
         card.classList.remove('solid-mode');
-
         document.getElementById('screen-2').classList.add('hidden');
         document.getElementById('screen-3').classList.add('hidden');
-        document.getElementById('screen-3').classList.remove('fade-in');
+        document.getElementById('screen-1').classList.remove('hidden');
 
-        const s1 = document.getElementById('screen-1');
-        s1.classList.remove('hidden');
-        s1.classList.add('fade-in');
-
-        photoIndex = 0;
-        document.getElementById('slideshow').src = photos[0];
-        document.getElementById('slideshow').classList.remove('fade-out'); 
-        
-        document.getElementById('noBtn').removeAttribute('style');
+        const noBtn = document.getElementById('noBtn');
+        noBtn.style.position = 'static';
+        noBtn.style.left = 'auto';
+        noBtn.style.top = 'auto';
     }
 
-    // --- UTILITIES ---
     function moveButton(e) {
         if(e && e.type === 'touchstart') e.preventDefault();
         
-        const btn = document.getElementById('noBtn');
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
         
-        const rect = btn.getBoundingClientRect();
-        const btnW = rect.width;
-        const btnH = rect.height;
+        // Scale Yes Button
+        yesScale += 0.15;
+        yesBtn.style.transform = `scale(${yesScale})`;
 
-        btn.style.position = 'fixed'; 
-        btn.style.zIndex = '9999'; 
+        noBtn.style.position = 'fixed'; 
+        noBtn.style.zIndex = '9999'; 
 
         const w = window.innerWidth;
         const h = window.innerHeight;
+        const rect = noBtn.getBoundingClientRect();
+        const yesRect = yesBtn.getBoundingClientRect();
 
         const buffer = 20; 
-        const minX = buffer;
-        const maxX = w - btnW - buffer;
-        const minY = buffer;
-        const maxY = h - btnH - buffer;
+        let newX, newY;
+        let isOverlapping = true;
 
-        const newX = Math.random() * (maxX - minX) + minX;
-        const newY = Math.random() * (maxY - minY) + minY;
+        // Anti-overlap logic
+        while (isOverlapping) {
+            newX = Math.random() * (w - rect.width - (buffer * 2)) + buffer;
+            newY = Math.random() * (h - rect.height - (buffer * 2)) + buffer;
 
-        btn.style.left = newX + 'px';
-        btn.style.top = newY + 'px';
+            const dangerPadding = 40; // Space around Yes button
+            const hitsYesX = newX + rect.width > yesRect.left - dangerPadding && newX < yesRect.right + dangerPadding;
+            const hitsYesY = newY + rect.height > yesRect.top - dangerPadding && newY < yesRect.bottom + dangerPadding;
+
+            if (!(hitsYesX && hitsYesY)) isOverlapping = false;
+        }
+
+        noBtn.style.left = newX + 'px';
+        noBtn.style.top = newY + 'px';
     }
 
     function rotatePhoto() {
         const imgElement = document.getElementById('slideshow');
         imgElement.classList.add('fade-out');
-
         setTimeout(() => {
             photoIndex = (photoIndex + 1) % photos.length; 
             imgElement.src = photos[photoIndex];
-            
-            imgElement.onload = () => {
-                imgElement.classList.remove('fade-out');
-            };
-            setTimeout(() => imgElement.classList.remove('fade-out'), 50);
-            
+            imgElement.onload = () => imgElement.classList.remove('fade-out');
         }, 500); 
     }
 
@@ -388,10 +339,9 @@
         const duration = Math.random() * 3 + 4; 
         emoji.style.animation = `floatUpAndSway ${duration}s linear forwards`;
         document.body.appendChild(emoji);
-        setTimeout(() => { emoji.remove(); }, duration * 1000);
+        setTimeout(() => emoji.remove(), duration * 1000);
     }
 </script>
 
 </body>
 </html>
-
