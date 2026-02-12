@@ -232,7 +232,7 @@
             נדבר, נצחק, נתרגש
             ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️
         </p>
-        <button class="btn btn-restart" onclick="restartSite()">מהתחלה 🔄</button>
+        <button class="btn btn-restart" onclick="restartSite()">מהתחלה ⏪</button>
     </div>
 </div>
 
@@ -284,6 +284,10 @@
         isNoTransformed = false;
 
         const noBtn = document.getElementById('noBtn');
+        const btnWrapper = document.getElementById('btn-wrapper');
+        
+        btnWrapper.appendChild(noBtn);
+
         noBtn.innerHTML = "לא 😢";
         noBtn.classList.remove('transformed');
         noBtn.style.position = 'static'; 
@@ -308,7 +312,7 @@
         noClickCount++;
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const container = document.getElementById('main-card'); 
+        const mainCard = document.getElementById('main-card');
 
         if (noClickCount >= 5) {
             isNoTransformed = true;
@@ -318,22 +322,29 @@
             noBtn.style.transform = 'scale(1)';
             noBtn.style.left = '';
             noBtn.style.top = '';
+            
+            const btnWrapper = document.getElementById('btn-wrapper');
+            btnWrapper.appendChild(noBtn);
+            
             return;
         }
 
-        noBtn.style.position = 'absolute'; 
-        noBtn.style.zIndex = '1000'; 
+        if (noBtn.parentNode !== mainCard) {
+            mainCard.appendChild(noBtn);
+            noBtn.style.position = 'absolute';
+        }
 
-        const containerRect = container.getBoundingClientRect();
+        const cardRect = mainCard.getBoundingClientRect();
         const btnW = noBtn.offsetWidth;
         const btnH = noBtn.offsetHeight;
         
-        const maxLeft = containerRect.width - btnW - 20; 
-        const maxTop = containerRect.height - btnH - 20;
+        const maxLeft = cardRect.width - btnW - 10; 
+        const maxTop = cardRect.height - btnH - 10;
         
         const yesRect = yesBtn.getBoundingClientRect();
-        const yesRelLeft = yesRect.left - containerRect.left;
-        const yesRelTop = yesRect.top - containerRect.top;
+        
+        const yesRelLeft = yesRect.left - cardRect.left;
+        const yesRelTop = yesRect.top - cardRect.top;
         const yesW = yesRect.width;
         const yesH = yesRect.height;
         
@@ -407,4 +418,3 @@
 
 </body>
 </html>
-
