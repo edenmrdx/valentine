@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>For Zozy ❤️</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+<title>בשביל זוזי ❤️</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Rubik:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
@@ -23,8 +26,8 @@
         background: linear-gradient(135deg, var(--bg-1), var(--bg-2), #fbc2eb);
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
-        font-family: 'Nunito', sans-serif;
-        overflow: hidden; /* Prevents scrolling when button moves */
+        font-family: 'Rubik', sans-serif; /* Clean Hebrew font */
+        overflow: hidden;
         position: relative;
     }
 
@@ -40,12 +43,10 @@
         background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        padding: 30px 20px; /* Smaller padding for mobile */
+        padding: 30px 20px;
         border-radius: 20px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         border: 1px solid rgba(255, 255, 255, 0.18);
-        
-        /* Mobile Sizing Fixes */
         width: 90%; 
         max-width: 350px; 
         position: relative;
@@ -53,14 +54,15 @@
     }
 
     h1 {
-        font-family: 'Pacifico', cursive;
-        font-size: 2rem; /* Slightly smaller for mobile */
-        margin-bottom: 15px;
+        font-family: 'Amatic SC', cursive; /* Handwritten Hebrew font */
+        font-size: 2.8rem; /* Made slightly bigger for Amatic */
+        margin-bottom: 10px;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        font-weight: 700;
     }
 
     p {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         line-height: 1.4;
         margin-bottom: 25px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
@@ -68,16 +70,17 @@
 
     .btn {
         padding: 12px 25px;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         border: none;
         border-radius: 50px;
         cursor: pointer;
-        transition: transform 0.2s ease; /* Faster transition for mobile */
+        transition: transform 0.2s ease;
         font-weight: bold;
+        font-family: 'Rubik', sans-serif;
         margin: 8px;
         outline: none;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        -webkit-tap-highlight-color: transparent; /* Removes blue box on tap */
+        -webkit-tap-highlight-color: transparent;
     }
 
     .btn-primary {
@@ -90,18 +93,17 @@
     .btn-yes {
         background: #2ed573;
         color: white;
-        z-index: 20; /* Ensure YES is always on top */
+        z-index: 20;
         position: relative;
     }
 
     .btn-no {
         background: #ff4757;
         color: white;
-        z-index: 50; /* Ensure NO floats above everything */
-        transition: top 0.3s ease, left 0.3s ease; /* Smooth movement */
+        z-index: 50; 
+        transition: top 0.3s ease, left 0.3s ease; 
     }
 
-    /* Slideshow Styling */
     .couple-photo {
         width: 100%;
         max-width: 280px;
@@ -110,16 +112,11 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         margin-top: 10px;
         border: 4px solid white;
-        
-        /* Smooth Transition for the image swap */
         transition: opacity 0.5s ease-in-out;
         opacity: 1;
     }
 
-    .fade-out {
-        opacity: 0;
-    }
-
+    .fade-out { opacity: 0; }
     .hidden { display: none; }
     
     .fade-in {
@@ -149,27 +146,27 @@
 
 <div class="container" id="main-card">
     <div id="screen-1">
-        <h1>Dear Zozy ❤️</h1>
-        <p>I have a question for you...</p>
-        <button class="btn btn-primary" onclick="revealMessage()">Click to Open</button>
+        <h1>לזוזי היקרה ❤️</h1>
+        <p>יש לי שאלה חשובה...</p>
+        <button class="btn btn-primary" onclick="revealMessage()">לחצי כאן</button>
     </div>
 
     <div id="screen-2" class="hidden">
-        <h1>Dear Zozy,</h1>
-        <p>You make my world brighter.<br>Will you be my Valentine?</p>
+        <h1>זוזי אהובתי,</h1>
+        <p>את עושה את העולם שלי שמח יותר.<br>האם תהיי הולנטיין שלי?</p>
         <div style="display: flex; justify-content: center; flex-wrap: wrap; position: relative;">
-            <button class="btn btn-yes" onclick="celebrate()">YES! ❤️</button>
+            <button class="btn btn-yes" onclick="celebrate()">כן! ❤️</button>
             
-            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()" onclick="moveButton()">No 😢</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()" onclick="moveButton()">לא 😢</button>
         </div>
     </div>
 
     <div id="screen-3" class="hidden">
-        <h1>YAY!!! 🎇🥂💐</h1>
+        <h1>יששש!!! 🎇🥂💐</h1>
         
         <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
         
-        <p style="margin-top: 20px;">Best Valentine Ever! ❤️</p>
+        <p style="margin-top: 20px;">הולנטיין הכי טוב אי פעם! ❤️</p>
     </div>
 </div>
 
@@ -196,25 +193,20 @@
         startEmojiRain(800); 
     }
 
-    // --- NEW MOBILE OPTIMIZED BUTTON MOVE ---
+    // --- SMART MOBILE BUTTON MOVE ---
     function moveButton() {
         const btn = document.getElementById('noBtn');
         
-        // Get the actual width/height of the button
         const btnWidth = btn.offsetWidth;
         const btnHeight = btn.offsetHeight;
         
-        // Get the window size
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
 
-        // Calculate the safe area so it never goes off screen
-        // We subtract the button size and a 20px padding from the edge
+        // Ensure button stays within screen bounds (LTR logic works fine for positioning)
         const maxLeft = windowWidth - btnWidth - 20;
         const maxTop = windowHeight - btnHeight - 20;
 
-        // Generate random position within safe area
-        // Math.max(10, ...) ensures it doesn't get too close to the top/left edge either
         const newLeft = Math.max(10, Math.random() * maxLeft);
         const newTop = Math.max(10, Math.random() * maxTop);
 
@@ -232,7 +224,7 @@
         clearIntervals();
         startEmojiRain(100); 
         
-        // --- CHANGED TO 4 SECONDS (4000ms) ---
+        // --- 4 Seconds per slide ---
         setInterval(rotatePhoto, 4000); 
     }
 
