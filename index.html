@@ -44,7 +44,7 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.18);
-        padding: 30px 20px;
+        padding: 20px 15px; /* הקטנתי קצת את ה-padding */
         border-radius: 20px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
         width: 90%; 
@@ -54,10 +54,17 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 400px; 
+        min-height: 400px;
+        max-height: 90vh; /* הגבלה לגובה המסך */
+        overflow-y: auto; /* מאפשר גלילה אם התוכן ארוך מדי */
         justify-content: center;
         transition: all 0.5s ease;
-        overflow: hidden;
+    }
+
+    /* הסתרת פס גלילה */
+    .container::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
     }
 
     .container.solid-mode {
@@ -67,12 +74,15 @@
         border: none;
         color: #ff6b81;
         box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        justify-content: flex-start; /* במסך האחרון מצמיד למעלה כדי לחסוך מקום */
+        padding-top: 30px;
     }
 
     h1 {
         font-family: 'Amatic SC', cursive;
-        font-size: 3rem; 
-        margin-bottom: 10px;
+        font-size: 2.8rem; 
+        margin-bottom: 5px;
+        margin-top: 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         font-weight: 700;
         line-height: 1;
@@ -80,8 +90,8 @@
 
     p {
         font-size: 1.1rem; 
-        line-height: 1.5;
-        margin-bottom: 20px;
+        line-height: 1.4;
+        margin-bottom: 15px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         white-space: pre-line; 
     }
@@ -89,10 +99,21 @@
     .solid-mode p, .solid-mode h1 {
         text-shadow: none;
     }
+    
+    /* ספציפי למסך 3 כדי לחסוך מקום */
+    #screen-3 p {
+        margin-bottom: 5px;
+        font-size: 1rem;
+    }
+    
+    #screen-3 h1 {
+        font-size: 2.5rem;
+        margin-bottom: 5px;
+    }
 
     .btn {
-        padding: 12px 25px;
-        font-size: 1.2rem;
+        padding: 10px 20px;
+        font-size: 1.1rem;
         border: none;
         border-radius: 50px;
         cursor: pointer;
@@ -119,8 +140,9 @@
         background: #ff6b81;
         border: none;
         color: white;
-        margin-top: 15px;
-        font-size: 1rem;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        padding: 8px 15px;
     }
     
     .btn-no {
@@ -135,18 +157,19 @@
     }
 
     .photo-container {
-        width: 250px;            
-        height: 250px;    
+        width: 180px;  /* הקטנתי מ-250 */          
+        height: 180px; /* הקטנתי מ-250 */   
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        margin-top: 10px;
-        border: 5px solid #fff;
+        margin-top: 5px;
+        border: 4px solid #fff;
         background-color: #eee;
         overflow: hidden; 
         flex-shrink: 0;      
         position: relative;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 5px;
     }
 
     .couple-photo {
@@ -158,35 +181,35 @@
         display: block;
     }
 
-    /* עיצוב הטיימר החדש */
+    /* עיצוב הטיימר */
     .countdown-wrapper {
         display: flex;
         justify-content: center;
-        gap: 10px;
-        margin: 15px 0;
+        gap: 6px; /* רווח קטן יותר */
+        margin: 5px 0;
         direction: rtl;
     }
 
     .time-box {
-        background: #ffeaa7; /* צהבהב עדין שמתאים לורוד */
+        background: #ffeaa7; 
         color: #ff6b81;
-        padding: 5px 8px;
-        border-radius: 10px;
-        min-width: 45px;
+        padding: 4px 6px; /* ריפוד קטן יותר */
+        border-radius: 8px;
+        min-width: 38px; /* רוחב מינימלי קטן יותר */
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .time-box span.number {
         font-weight: 700;
-        font-size: 1.2rem;
+        font-size: 1rem; /* פונט קטן יותר */
         line-height: 1;
     }
 
     .time-box span.label {
-        font-size: 0.7rem;
+        font-size: 0.6rem; /* תווית קטנה יותר */
         font-weight: 400;
         margin-top: 2px;
     }
@@ -270,34 +293,32 @@
         <div class="photo-container">
             <img src="us1.jpg" alt="Us" class="couple-photo" id="slideshow">
         </div>
-        <p style="margin-top: 10px; margin-bottom: 5px;">
-            ב- 14/02 בשעה 22:00 (שעון הפיליפינים)
-            ניפגש לדייט וידאו רומנטי!
-            <br>נשאר עוד:
+        <p style="margin-top: 8px; margin-bottom: 2px; font-weight: bold;">
+            14/02 בשעה 22:00 (שעון הפיליפינים)
         </p>
+        <p style="font-size: 0.9rem; margin: 0;">נשאר עוד:</p>
 
         <div class="countdown-wrapper" id="countdown">
             <div class="time-box">
-                <span class="number" id="days">0</span>
-                <span class="label">ימים</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="hours">0</span>
-                <span class="label">שעות</span>
+                <span class="number" id="seconds">0</span>
+                <span class="label">שניות</span>
             </div>
             <div class="time-box">
                 <span class="number" id="minutes">0</span>
                 <span class="label">דקות</span>
             </div>
             <div class="time-box">
-                <span class="number" id="seconds">0</span>
-                <span class="label">שניות</span>
+                <span class="number" id="hours">0</span>
+                <span class="label">שעות</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="days">0</span>
+                <span class="label">ימים</span>
             </div>
         </div>
 
-        <p style="font-size: 0.9rem;">
-            נדבר, נצחק, נתרגש
-            ויהיה לנו הולנטיין הכי טוב אי פעם! ❤️
+        <p style="font-size: 0.9rem; margin-top: 5px;">
+            דייט וידאו רומנטי! ❤️
         </p>
         <button class="btn btn-restart" onclick="restartSite()">מהתחלה 🔄</button>
     </div>
@@ -310,7 +331,7 @@
     let emojiIntervals = []; 
     let noClickCount = 0;
     let isNoTransformed = false;
-    let countdownInterval; // משתנה לשמירת ה-Interval של השעון
+    let countdownInterval; 
     const emojis = ["❤️", "🦦", "🐶", "🐥", "🥰"]; 
 
     function revealMessage() {
@@ -342,7 +363,6 @@
         startEmojiRain(100); 
         slideshowInterval = setInterval(rotatePhoto, 4000); 
         
-        // התחלת השעון
         startCountdown();
     }
 
@@ -352,7 +372,7 @@
         document.getElementById('main-card').classList.remove('solid-mode');
 
         clearInterval(slideshowInterval);
-        clearInterval(countdownInterval); // איפוס השעון
+        clearInterval(countdownInterval); 
         clearEmojiIntervals();
         
         document.querySelectorAll('.floater').forEach(el => el.remove());
@@ -375,20 +395,17 @@
         noBtn.style.transform = '';
     }
 
-    // פונקציית השעון החדשה
     function startCountdown() {
-        // חישוב השנה הנוכחית כדי שהקוד יעבוד גם בשנים הבאות (או שניתן לקבוע 2024 קבוע)
+        // שימוש בשנה הנוכחית
         const currentYear = new Date().getFullYear();
         
-        // הגדרת תאריך היעד: 14 בפברואר בשעה 22:00, איזור זמן UTC+8 (פיליפינים)
-        // הפורמט ISO עם Offset מבטיח דיוק בזמנים
+        // הגדרת זמן היעד: 14 בפברואר שעה 22:00 שעון פיליפינים (GMT+8)
         const targetDate = new Date(`${currentYear}-02-14T22:00:00+08:00`).getTime();
 
         function updateTimer() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
-            // אם התאריך עבר
             if (distance < 0) {
                 document.getElementById("countdown").innerHTML = "<h3 style='margin:0'>הזמן הגיע! ❤️</h3>";
                 clearInterval(countdownInterval);
@@ -406,7 +423,7 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }
 
-        updateTimer(); // הרצה ראשונית מיידית
+        updateTimer(); 
         countdownInterval = setInterval(updateTimer, 1000);
     }
 
@@ -546,14 +563,12 @@
         heart.classList.add('click-heart');
         heart.innerHTML = "❤️";
         
-        // Random position near the click
         const offsetX = (Math.random() - 0.5) * 50;
         const offsetY = (Math.random() - 0.5) * 50;
         
         heart.style.left = (e.clientX + offsetX) + 'px';
         heart.style.top = (e.clientY + offsetY) + 'px';
         
-        // Random size and rotation
         const size = Math.random() * 20 + 10;
         heart.style.fontSize = size + 'px';
         heart.style.transform = `rotate(${Math.random() * 360}deg)`;
