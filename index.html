@@ -125,7 +125,12 @@
     .btn-no {
         background: #ff4757;
         color: white;
-        transition: top 0.2s ease, left 0.2s ease; 
+        transition: top 0.2s ease, left 0.2s ease, background-color 0.3s ease; 
+    }
+
+    /* Styles for when No turns into Yes */
+    .btn-no.transformed {
+        background: #2ed573 !important;
     }
 
     .photo-container {
@@ -189,6 +194,7 @@
             אנחנו נמצאים בנקודות שונות על כדור הארץ,
             אבל בולנטיין הזה אני מרגיש קרוב אלייך מתמיד.
         </p>
+        <p>
             חשוב לי שתדעי שאין כמוך בעולם,
             את הכל בשבילי,
             ואני אוהב אותך הכי שיש!
@@ -203,9 +209,9 @@
         <h1>❤️</h1>
         <p style="font-size: 1.5rem; font-weight: bold;">האם תהיי הולנטיין שלי?</p>
         
-        <div style="display: flex; justify-content: center; flex-wrap: wrap; position: relative; width: 100%; min-height: 100px;">
+        <div id="btn-wrapper" style="display: flex; justify-content: center; flex-wrap: wrap; position: relative; width: 100%; min-height: 100px;">
             <button class="btn btn-yes" id="yesBtn" onclick="celebrate()">כן! ❤️</button>
-            <button class="btn btn-no" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="moveButton(event)">לא 😢</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="handleNoClick(event)">לא 😢</button>
         </div>
     </div>
 
@@ -231,6 +237,8 @@
     let slideshowInterval; 
     let emojiIntervals = []; 
     let yesScale = 1;
+    let noClickCount = 0;
+    let isNoTransformed = false;
     const emojis = ["❤️", "🦦", "🐶", "💖", "🥰"]; 
 
     function revealMessage() {
@@ -253,29 +261,36 @@
     }
 
     function restartSite() {
-        clearInterval(slideshowInterval);
-        clearEmojiIntervals();
-        yesScale = 1;
-        const yesBtn = document.getElementById('yesBtn');
-        yesBtn.style.transform = 'scale(1)';
-        
-        const card = document.getElementById('main-card');
-        card.classList.remove('solid-mode');
-        document.getElementById('screen-2').classList.add('hidden');
-        document.getElementById('screen-3').classList.add('hidden');
-        document.getElementById('screen-1').classList.remove('hidden');
+        location.reload(); // Simplest way to reset all states and counters
+    }
 
-        const noBtn = document.getElementById('noBtn');
-        noBtn.style.position = 'static';
-        noBtn.style.left = 'auto';
-        noBtn.style.top = 'auto';
+    function handleNoClick(e) {
+        if (isNoTransformed) {
+            celebrate();
+        } else {
+            moveButton(e);
+        }
     }
 
     function moveButton(e) {
+        if (isNoTransformed) return;
         if(e && e.type === 'touchstart') e.preventDefault();
         
+        noClickCount++;
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
+
+        // Check for transformation
+        if (noClickCount >= 5) {
+            isNoTransformed = true;
+            noBtn.innerHTML = "כן! ❤️";
+            noBtn.classList.add('transformed');
+            noBtn.style.position = 'static';
+            noBtn.style.left = 'auto';
+            noBtn.style.top = 'auto';
+            noBtn.style.transform = 'scale(1)';
+            return;
+        }
         
         // Scale Yes Button
         yesScale += 0.15;
@@ -284,25 +299,33 @@
         noBtn.style.position = 'fixed'; 
         noBtn.style.zIndex = '9999'; 
 
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        const rect = noBtn.getBoundingClientRect();
+        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+        
+        const btnWidth = noBtn.offsetWidth;
+        const btnHeight = noBtn.offsetHeight;
         const yesRect = yesBtn.getBoundingClientRect();
 
-        const buffer = 20; 
         let newX, newY;
         let isOverlapping = true;
+        let attempts = 0;
 
-        // Anti-overlap logic
-        while (isOverlapping) {
-            newX = Math.random() * (w - rect.width - (buffer * 2)) + buffer;
-            newY = Math.random() * (h - rect.height - (buffer * 2)) + buffer;
+        while (isOverlapping && attempts < 50) {
+            // Keep button 20px away from screen edges
+            newX = Math.random() * (vw - btnWidth - 40) + 20;
+            newY = Math.random() * (vh - btnHeight - 40) + 20;
 
-            const dangerPadding = 40; // Space around Yes button
-            const hitsYesX = newX + rect.width > yesRect.left - dangerPadding && newX < yesRect.right + dangerPadding;
-            const hitsYesY = newY + rect.height > yesRect.top - dangerPadding && newY < yesRect.bottom + dangerPadding;
+            // Check overlap with Yes Button (including a safety buffer)
+            const buffer = 30;
+            const overlapsYes = !(
+                newX + btnWidth + buffer < yesRect.left || 
+                newX - buffer > yesRect.right || 
+                newY + btnHeight + buffer < yesRect.top || 
+                newY - buffer > yesRect.bottom
+            );
 
-            if (!(hitsYesX && hitsYesY)) isOverlapping = false;
+            if (!overlapsYes) isOverlapping = false;
+            attempts++;
         }
 
         noBtn.style.left = newX + 'px';
